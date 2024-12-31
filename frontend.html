@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Video</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Youtube downloader</h1>
+  <p> Want to download your favourite cooking video or music video. Follow these below steps to download your favourite video</p>
+  <p>Step1: Go to Youtube and copy link the video you want to download </p>
+  <p>Step2: Paste the link here and click and download </p>
+  <p>Patiently wait your video will be download.</p>
+  <form id="download-form">
+    <label for="link">Video Link:</label>
+    <input type="text" id="link" name="link" required>
+    <button type="submit">Download</button>
+  </form>
+
+  <script>
+    document.getElementById('download-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const link = document.getElementById('link').value; // Get link value
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/download', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json', // Ensure the content type is JSON
+          },
+          body: JSON.stringify({ link }) // Send the link as JSON
+        });
+
+        const result = await response.json();
+        if (result.status === 'download started') {
+          alert('Download started successfully.');
+        } else {
+          alert('Error: ' + result.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred.');
+      }
+    });
+  </script>
+  <h2>Thankyou for visiting this website. Hope you had great experience.</h2>
+</body>
+</html>
